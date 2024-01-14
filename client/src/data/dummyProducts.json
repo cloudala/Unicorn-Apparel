@@ -8,8 +8,7 @@
         "price": 23.99,
         "shortDescription": "Comfortable cotton t-shirt for everyday wear.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 47,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 47
       },
       {
         "id": 2,
@@ -19,8 +18,7 @@
         "price": 49.99,
         "shortDescription": "Stylish slim fit jeans for a trendy look.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 30,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 30
       },
       {
         "id": 3,
@@ -30,8 +28,7 @@
         "price": 35.5,
         "shortDescription": "Relaxed-fit hoodie for casual and comfortable wear.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 20,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 20
       },
       {
         "id": 4,
@@ -41,8 +38,7 @@
         "price": 23.99,
         "shortDescription": "Comfortable cotton t-shirt for everyday wear.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 0,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 0
       },
       {
         "id": 5,
@@ -52,8 +48,7 @@
         "price": 49.99,
         "shortDescription": "Stylish slim fit jeans for a trendy look.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 30,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 30
       },
       {
         "id": 6,
@@ -63,8 +58,7 @@
         "price": 35.5,
         "shortDescription": "Relaxed-fit hoodie for casual and comfortable wear.",
         "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et libero nec nisi tempor malesuada. Proin a ex nec neque feugiat interdum ac eu elit.",
-        "count": 20,
-        "deliveryOptions": [{"option": "Inpost", "price": 7.99}, {"option": "Kurier", "price": 10.99}]
+        "count": 20
       }
     ]
   }
