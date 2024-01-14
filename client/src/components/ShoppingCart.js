@@ -11,10 +11,10 @@ export default function ShoppingCart() {
     const productsInCart = products.filter(product => cartItems.some(item => item.id === product.id));
     const subtotal = cartItems.reduce((subtotal, item) => {
         const productPrice = products.find(product => product.id === item.id).price
-        console.log(productPrice)
         return subtotal + item.quantity*productPrice
     }, 0)
-    const shippingCost = 10.99
+    const shippingCost = subtotal === 0 ? 0 : 10.99
+    const checkoutDisabled = subtotal === 0
 
     return (
         <div className="min-h-screen">
@@ -39,7 +39,7 @@ export default function ShoppingCart() {
                         <p className="text-xl font-semibold">Order Total:</p>
                         <p className="text-xl font-semibold">{formatCurrency(subtotal + shippingCost)}</p>
                     </div>
-                    <CheckoutButton text='Checkout'/>
+                    <CheckoutButton text='Checkout' checkoutDisabled={checkoutDisabled}/>
                 </div>
             </div>
         </div>
