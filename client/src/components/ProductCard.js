@@ -8,6 +8,7 @@ import AddToCart from "./AddToCart";
 import { FaTruck } from 'react-icons/fa';
 import formatCurrency from '../utils/currencyFormatter'
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
+import { Link } from 'react-router-dom'
 
 export default function ProductCard({product}) {
     const {getItemQuantity} = useContext(ShoppingCartContext)
@@ -21,7 +22,7 @@ export default function ProductCard({product}) {
                 <div className="flex justify-between">
                     <div>
                         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.title}</h5>
-                        <StarRating/>
+                        <StarRating value={4.25}/>
                     </div>
                     <div className="flex flex-col items-end">
                         <div className="text-3xl font-bold text-gray-900 dark:text-white">{formatCurrency(product.price)}</div>
@@ -32,7 +33,7 @@ export default function ProductCard({product}) {
                 <p className="pb-5">{product.shortDescription}</p>
                 {/* Maybe change opacity to display:none */}
                 <div className="flex items-baseline justify-around opacity-0 group-hover:opacity-100 transition-opacity">
-                    <SecondaryButton text='Show Details'/>
+                    <Link to={`/products/${product.id}`}><SecondaryButton text='Show Details'/></Link>
                 {product.count > 0 ? (
                     inCartCount > 0 ? (
                     /* If both conditions are true, render a different component */

@@ -7,7 +7,7 @@ export default function NavBar() {
     const {cartQuantity} = useContext(ShoppingCartContext)
     return (
         <header className='flex justify-between items-center w-full bg-white shadow-lg dark:bg-gray-800 dark:border-gray-700 p-3'>
-            <NavLink to='/'><h2 className='font-bold'>Logo</h2></NavLink>
+            <NavLink to='/'><h2 className='font-bold'> 🦄 Unicorn Apparel</h2></NavLink>
             <nav className='w-2/4'>
                 <ul className='flex justify-evenly'>
                     <NavLink to='/'>Home</NavLink>

@@ -7,6 +7,7 @@ import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 import { ProductContext } from './contexts/ProductContext';
 import CheckoutForm from './components/CheckoutForm';
+import ProductDetails from './components/ProductDetails'
 
 export default function App() {
   const { products, setProducts } = useContext(ProductContext);
@@ -17,6 +18,7 @@ export default function App() {
           <Route path='/' element={<ProductList/>}/>
           <Route path='/store' element={<h1>Store</h1>}/>
           <Route path='/admin' element={<h1>Admin Panel</h1>}/>
+          <Route path='/products/:id' element={<ProductDetails products={products}/>}/>
           <Route path='/cart' element={<ShoppingCart/>}/>
           <Route path='/cart/checkout' element={<CheckoutForm/>}/>
         </Routes>

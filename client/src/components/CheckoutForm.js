@@ -74,7 +74,7 @@ export default function CheckoutForm() {
   });
 
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center'>
+    <div className='min-h-screen flex flex-col items-center justify-center my-5'>
       <form
         action=''
         onSubmit={formik.handleSubmit}
@@ -199,10 +199,9 @@ export default function CheckoutForm() {
         ) : (
           <></>
         )}
-        <br />
-        <label htmlFor='delivery' className='text-xl font-semibold mb-5'>Choose Delivery Option: </label>
+        <h2 htmlFor='delivery' className='text-xl font-semibold mt-5'>Choose Delivery Option: </h2>
         <div>
-            <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+            <div className="bg-white flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                 <input
                 type='radio'
                 id='InPost'
@@ -210,11 +209,11 @@ export default function CheckoutForm() {
                 name='delivery'
                 checked={formik.values.delivery === 'InPost'}
                 onChange={formik.handleChange}
-                className="cursor-pointer w-4 h-4 text-blue-600 bg-white border-gray-300 focus:ring-blue-500"
+                className="cursor-pointer w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />{' '}
-                <label htmlFor='InPost' className="bg-white cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">InPost</label>
+                <label htmlFor='InPost' className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">InPost</label>
             </div>
-            <div className="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+            <div className="bg-white flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                 <input
                 type='radio'
                 id='Kurier'
@@ -222,9 +221,9 @@ export default function CheckoutForm() {
                 name='delivery'
                 checked={formik.values.delivery === 'Kurier'}
                 onChange={formik.handleChange}
-                className="cursor-pointer w-4 h-4 text-blue-600 bg-white border-gray-300 focus:ring-blue-500"
+                className="cursor-pointer w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />{' '}
-                <label htmlFor='Kurier' className="bg-white cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">Kurier</label>
+                <label htmlFor='Kurier' className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">Kurier</label>
             </div>
             {formik.touched.delivery && formik.errors.delivery ? (
                 <ErrorMessage message={formik.errors.delivery} />
@@ -232,17 +231,17 @@ export default function CheckoutForm() {
                 <></>
             )}
         </div>
-        <div className="mt-10 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+        <div className="bg-white mt-10 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
             <input
                 type='checkbox'
                 id='terms'
                 name='terms'
-                checked={formik.values.terms}
+                defaultChecked={formik.values.terms}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="cursor-pointer w-4 h-4 text-blue-600 bg-white border-gray-300 focus:ring-blue-500"
+                className="cursor-pointer w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
             />
-            <label htmlFor='terms' className="bg-white cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">
+            <label htmlFor='terms' className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">
                 I agree to the terms of service
             </label>
         </div>
