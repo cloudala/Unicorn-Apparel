@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ErrorMessage from './ErrorMessage';
 import { useFormik } from 'formik';
 import { toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom'
+import { ShoppingCartContext } from '../contexts/ShoppingCartContext'
 import * as Yup from 'yup';
 
 export default function CheckoutForm() {
+  const { clearCart } = useContext(ShoppingCartContext);
+  const navigate = useNavigate()
   const inputStyles = 'w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300'
   const formik = useFormik({
     initialValues: {
@@ -51,6 +55,7 @@ export default function CheckoutForm() {
 
       console.log(values);
       resetForm();
+      clearCart();
       toast.success('🦄 Order Accepted!', {
         position: "top-center",
         autoClose: 5000,
@@ -61,7 +66,10 @@ export default function CheckoutForm() {
         progress: undefined,
         theme: "light",
         transition: Bounce,
-        });
+        onClose: () => {
+          navigate('/');
+        }
+      });
     },
   });
 
