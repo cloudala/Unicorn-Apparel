@@ -3,6 +3,7 @@ import { ProductContext } from '../contexts/ProductContext';
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
 import CartItemCard from "./CartItemCard";
 import CheckoutButton from './CheckoutButton'
+import formatCurrency from "../utils/currencyFormatter";
 
 export default function ShoppingCart() {
     const { products, setProducts } = useContext(ProductContext);
@@ -28,15 +29,15 @@ export default function ShoppingCart() {
                     <h2 className="text-xl font-semibold mb-6">Order Summary:</h2>
                     <div className="flex justify-between my-3 border-b border-gray-300 pb-3">
                         <p className="">Subtotal:</p>
-                        <p>{subtotal}</p>
+                        <p>{formatCurrency(subtotal)}</p>
                     </div>
                     <div className="flex justify-between my-3 border-b border-gray-300 pb-3">
                         <p className="">Shipping estimate:</p>
-                        <p>{shippingCost}</p>
+                        <p>{formatCurrency(shippingCost)}</p>
                     </div>
                     <div className="flex justify-between my-3 pb-3">
                         <p className="text-xl font-semibold">Order Total:</p>
-                        <p className="text-xl font-semibold">{subtotal + shippingCost}</p>
+                        <p className="text-xl font-semibold">{formatCurrency(subtotal + shippingCost)}</p>
                     </div>
                     <CheckoutButton text='Checkout'/>
                 </div>
