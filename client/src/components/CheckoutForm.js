@@ -1,6 +1,8 @@
 import React from 'react';
 import ErrorMessage from './ErrorMessage';
 import { useFormik } from 'formik';
+import { toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
 
 export default function CheckoutForm() {
@@ -49,7 +51,17 @@ export default function CheckoutForm() {
 
       console.log(values);
       resetForm();
-      window.alert('Order accepted!')
+      toast.success('🦄 Order Accepted!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
     },
   });
 
