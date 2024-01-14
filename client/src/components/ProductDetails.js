@@ -10,8 +10,9 @@ export default function ProductDetails({product}) {
             <div className="w-1/2 flex flex-col">
                 <div className="text-4xl font-bold text-gray-900 dark:text-white">{product.title}</div>
                 <StarRating/>
-                <div className="w-3/4">{product.longDescription}</div>
-                <p>Delivery options</p>
+                <div className="w-3/4 py-2">{product.longDescription}</div>
+                <h1 className="text-4xl font-bold text-gray-900 my-3">{product.price} PLN</h1>
+                <p>Delivery options:</p>
                 <ul>
                     {product.deliveryOptions.map((deliveryOption, id) => <li key={id}>{deliveryOption.option}: {deliveryOption.price} PLN</li>)}
                 </ul>

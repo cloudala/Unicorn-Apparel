@@ -1,9 +1,10 @@
+import { Routes, Route } from 'react-router-dom';
 import { useContext } from 'react';
 import './App.css';
 import ProductList from './components/ProductList';
 import NavBar from './components/NavBar';
+import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
-import ProductDetails from './components/ProductDetails'
 import { ProductContext } from './contexts/ProductContext';
 
 export default function App() {
@@ -11,8 +12,13 @@ export default function App() {
   return (
     <>
       <NavBar/>
-      <ProductList/>
-      <ProductDetails product={products[0]}/>
+        <Routes>
+          <Route path='/' element={<ProductList/>}/>
+          <Route path='/store' element={<h1>Store</h1>}/>
+          <Route path='/admin' element={<h1>Admin Panel</h1>}/>
+          <Route path='/cart' element={<ShoppingCart/>}/>
+          <Route path='/cart/checkout' element={<h1>Checkout page</h1>}/>
+        </Routes>
       <Footer/>
     </>
   )
