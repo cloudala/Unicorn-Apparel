@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 import { ProductProvider } from './contexts/ProductContext';
 import { ShoppingCartProvider } from './contexts/ShoppingCartContext';
+import { OrderDataProvider } from './contexts/OrderDataContext';
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
+import ScrollToTop from './components/ScrollToTop'
 import 'react-toastify/dist/ReactToastify.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -15,6 +17,8 @@ root.render(
     <BrowserRouter>
       <ProductProvider>
         <ShoppingCartProvider>
+          <OrderDataProvider>
+            <ScrollToTop/>
             <App />
             <ToastContainer
             position="top-center"
@@ -29,6 +33,7 @@ root.render(
             theme="light"
             transition={{ type: 'Bounce' }}
             />
+          </OrderDataProvider>
         </ShoppingCartProvider>
       </ProductProvider>
     </BrowserRouter>
