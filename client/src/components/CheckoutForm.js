@@ -5,9 +5,11 @@ import { toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom'
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext'
+import { OrderDataContext } from '../contexts/OrderDataContext'
 import * as Yup from 'yup';
 
 export default function CheckoutForm() {
+  const {orderData, setOrderData} = useContext(OrderDataContext)
   const { clearCart } = useContext(ShoppingCartContext);
   const navigate = useNavigate()
   const inputStyles = 'w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300'
@@ -50,26 +52,25 @@ export default function CheckoutForm() {
       ),
     }),
     onSubmit: (values, { resetForm }) => {
-      const { name, surname, email, phoneNumber, street, postalCode, city, delivery,
-      terms} = values;
-
+      setOrderData(values)
       console.log(values);
       resetForm();
-      clearCart();
-      toast.success('🦄 Order Accepted!', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        onClose: () => {
-          navigate('/');
-        }
-      });
+      navigate("/cart/checkout/order")
+      // clearCart();
+      // toast.success('🦄 Order Accepted!', {
+      //   position: "top-center",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      //   transition: Bounce,
+      //   onClose: () => {
+      //     navigate('/');
+      //   }
+      // });
     },
   });
 

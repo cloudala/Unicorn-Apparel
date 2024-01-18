@@ -13,7 +13,7 @@ export default function ShoppingCart() {
         const productPrice = products.find(product => product.id === item.id).price
         return subtotal + item.quantity*productPrice
     }, 0)
-    const shippingCost = subtotal === 0 ? 0 : 10.99
+    const shippingCost = subtotal === 0 ? 0 : 7.99
     const checkoutDisabled = subtotal === 0
 
     return (
