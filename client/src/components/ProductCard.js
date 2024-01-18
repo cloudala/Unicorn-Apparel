@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 export default function ProductCard({product}) {
     const {getItemQuantity} = useContext(ShoppingCartContext)
     const inCartCount = getItemQuantity(product.id)
+    console.log(product.id)
     return (
         <div className="relative w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 group overflow-hidden">
             <div className="h-64 w-64 rounded-t-lg mx-auto my-5">
@@ -22,7 +23,7 @@ export default function ProductCard({product}) {
                 <div className="flex justify-between">
                     <div>
                         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.title}</h5>
-                        <StarRating value={4.25}/>
+                        <StarRating value={product.averageRating}/>
                     </div>
                     <div className="flex flex-col items-end">
                         <div className="text-3xl font-bold text-gray-900 dark:text-white">{formatCurrency(product.price)}</div>
