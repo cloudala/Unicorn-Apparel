@@ -77,7 +77,7 @@ export default function NewProductForm() {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="bg-gray-50 rounded-lg p-10 mx-auto w-1/2">
+    <form onSubmit={formik.handleSubmit} className="bg-gray-50 rounded-lg p-10 mx-auto w-full">
 
       <div className="mb-4">
         <input
