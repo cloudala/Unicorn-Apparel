@@ -273,6 +273,24 @@ router.delete('/api/products/:id/reviews/:reviewId', async (req, res) => {
   }
 });
 
+// Endpoint for getting delivery options
+router.get('/api/delivery', async (req, res) => {
+  try {
+    const session = driver.session();
+
+    const result = await session.run('MATCH (n:Delivery) RETURN n.id AS id, n.type AS type, n.price AS price');
+    
+    session.close();
+
+    const delivery = result.records.map(record => record.toObject());
+    res.json({delivery});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 // Close the Neo4j driver when the app exits
 process.on('exit', () => {
   driver.close();
