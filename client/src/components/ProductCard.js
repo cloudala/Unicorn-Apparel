@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import StarRating from "./StarRating";
 import AddToCartButton from "./AddToCartButton";
 import SecondaryButton from './SecondaryButton';
@@ -7,10 +7,14 @@ import Available from "./Available";
 import AddToCart from "./AddToCart";
 import { FaTruck } from 'react-icons/fa';
 import formatCurrency from '../utils/currencyFormatter'
+import { DeliveryContext } from '../contexts/DeliveryContext';
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
 import { Link } from 'react-router-dom'
+import Loading from './Loading'
 
 export default function ProductCard({product}) {
+    const { delivery, loading } = useContext(DeliveryContext)
+    const cheapestDeliveryPrice = !loading && delivery.length > 0 ? Math.min(...delivery.map(deliveryOption => deliveryOption.price)) : null;
     const {getItemQuantity} = useContext(ShoppingCartContext)
     const inCartCount = getItemQuantity(product.id)
     console.log(product.id)
@@ -27,7 +31,7 @@ export default function ProductCard({product}) {
                     </div>
                     <div className="flex flex-col items-end">
                         <div className="text-3xl font-bold text-gray-900 dark:text-white">{formatCurrency(product.price)}</div>
-                        <div className="flex items-center text-1xl font-semibold text-gray-900 dark:text-white"><FaTruck className="mr-2"/>from {formatCurrency(7.99)}</div>
+                        <div className="flex items-center text-1xl font-semibold text-gray-900 dark:text-white"><FaTruck className="mr-2"/>{!loading && cheapestDeliveryPrice ? `from ${formatCurrency(cheapestDeliveryPrice)}` : <Loading/>}</div>
                     </div>
                 </div>
                 <Available count={product.count}/>

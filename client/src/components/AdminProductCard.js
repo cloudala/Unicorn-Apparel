@@ -23,7 +23,7 @@ export default function AdminProductCard({product}) {
             </div>
             <div className="flex gap-3 ml-auto mr-5">
                 <EditProductButton text="Edit Product"/>
-                <DeleteProductButton text="Delete Product"/>
+                <DeleteProductButton text="Delete Product" id={product.id}/>
             </div>
         </div>
     )

@@ -10,18 +10,18 @@ export default function NewProductForm() {
       imageUrl: '',
       category: '',
       price: '',
+      count: '',
       shortDescription: '',
       longDescription: '',
-      count: '',
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
       imageUrl: Yup.string().url('Invalid URL format').required('Image URL is required'),
       category: Yup.string().required('Category is required'),
       price: Yup.number().required('Price is required').positive('Price must be a positive number'),
-      shortDescription: Yup.string().required('Short Description is required'),
-      longDescription: Yup.string().required('Long Description is required'),
       count: Yup.number().required('Count is required').integer('Count must be an integer').min(0, 'Count must be at least 0'),
+      shortDescription: Yup.string().required('Short Description is required'),
+      longDescription: Yup.string().required('Long Description is required')
     }),
     onSubmit: async (values) => {
       try {
@@ -137,6 +137,20 @@ export default function NewProductForm() {
 
       <div className="mb-4">
         <input
+          type="number"
+          id="count"
+          name="count"
+          placeholder='Count'
+          value={formik.values.count}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className="w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+        />
+        {formik.touched.count && formik.errors.count && <div className="text-red-500">{formik.errors.count}</div>}
+      </div>
+
+      <div className="mb-4">
+        <input
           type="text"
           id="shortDescription"
           name="shortDescription"
@@ -160,20 +174,6 @@ export default function NewProductForm() {
           className="w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
         ></textarea>
         {formik.touched.longDescription && formik.errors.longDescription && <div className="text-red-500">{formik.errors.longDescription}</div>}
-      </div>
-
-      <div className="mb-4">
-        <input
-          type="number"
-          id="count"
-          name="count"
-          placeholder='Count'
-          value={formik.values.count}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className="w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
-        />
-        {formik.touched.count && formik.errors.count && <div className="text-red-500">{formik.errors.count}</div>}
       </div>
 
       <div className='flex justify-end gap-2'>

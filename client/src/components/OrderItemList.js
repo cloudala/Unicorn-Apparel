@@ -23,8 +23,6 @@ export default function OrderItemList() {
         const productPrice = products.find(product => product.id === item.id).price
         return subtotal + item.quantity*productPrice
     }, 0)
-
-    const shippingCost = subtotal === 0 ? 0 : 7.99
     
     function handleButtonClick() {
         toast.success('🦄 Order Accepted!', {
@@ -50,7 +48,7 @@ export default function OrderItemList() {
                 <div className="flex flex-col gap-3">{orderedProducts.every(orderedProduct => orderedProduct.title) ? orderedProducts.map((product, id) => <OrderItemCard key={id} product={product}/>) : <Loading/>}</div>
             </div>
             <div className="w-2/5 max-h-fit bg-gray-50 rounded-lg p-10 ml-5 mt-20">
-                <OrderDataSummary subtotal={subtotal} shippingCost={shippingCost}/>
+                <OrderDataSummary subtotal={subtotal}/>
                 <div className="flex justify-end mt-6">
                     <OrderButton text="Confirm Order" onClick={handleButtonClick}/>
                 </div>

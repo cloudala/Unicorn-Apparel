@@ -1,20 +1,42 @@
 import React, { useContext } from "react";
 import { ProductContext } from '../contexts/ProductContext';
+import { DeliveryContext } from '../contexts/DeliveryContext';
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
 import CartItemCard from "./CartItemCard";
 import CheckoutButton from './CheckoutButton'
 import formatCurrency from "../utils/currencyFormatter";
+import Loading from './Loading'
 
 export default function ShoppingCart() {
-    const { products, setProducts } = useContext(ProductContext);
-    const { cartItems } = useContext(ShoppingCartContext)
+    const { products } = useContext(ProductContext);
+    const { cartItems } = useContext(ShoppingCartContext);
+    const { delivery, loading } = useContext(DeliveryContext);
+
+    if (!products) {
+      return <Loading />;
+    }
+  
     const productsInCart = products.filter(product => cartItems.some(item => item.id === product.id));
     const subtotal = cartItems.reduce((subtotal, item) => {
-        const productPrice = products.find(product => product.id === item.id).price
-        return subtotal + item.quantity*productPrice
-    }, 0)
-    const shippingCost = subtotal === 0 ? 0 : 7.99
-    const checkoutDisabled = subtotal === 0
+      const product = products.find(product => product.id === item.id);
+      if (product) {
+        return subtotal + item.quantity * product.price;
+      }
+      return subtotal;
+    }, 0);
+  
+    if (!delivery) {
+      return <Loading />;
+    }
+  
+    const cheapestDeliveryPrice =
+      subtotal === 0
+        ? 0
+        : !loading && delivery.length > 0
+        ? Math.min(...delivery.map(deliveryOption => deliveryOption.price))
+        : null;
+  
+    const checkoutDisabled = subtotal === 0;
 
     return (
         <div className="min-h-screen">
@@ -32,12 +54,12 @@ export default function ShoppingCart() {
                         <p>{formatCurrency(subtotal)}</p>
                     </div>
                     <div className="flex justify-between my-3 border-b border-gray-300 pb-3">
-                        <p className="">Shipping estimate:</p>
-                        <p>{formatCurrency(shippingCost)}</p>
+                        <p className="">Shipping estimate (cheapest option):</p>
+                        <p>{formatCurrency(cheapestDeliveryPrice)}</p>
                     </div>
                     <div className="flex justify-between my-3 pb-3">
                         <p className="text-xl font-semibold">Order Total:</p>
-                        <p className="text-xl font-semibold">{formatCurrency(subtotal + shippingCost)}</p>
+                        <p className="text-xl font-semibold">{formatCurrency(subtotal + cheapestDeliveryPrice)}</p>
                     </div>
                     <CheckoutButton text='Checkout' checkoutDisabled={checkoutDisabled}/>
                 </div>

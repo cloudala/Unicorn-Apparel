@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
 import ErrorMessage from './ErrorMessage';
 import { useFormik } from 'formik';
-import { toast, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom'
-import { ShoppingCartContext } from '../contexts/ShoppingCartContext'
 import { OrderDataContext } from '../contexts/OrderDataContext'
+import { DeliveryContext } from '../contexts/DeliveryContext';
+import formatCurrency from '../utils/currencyFormatter';
 import * as Yup from 'yup';
 
 export default function CheckoutForm() {
-  const {orderData, setOrderData} = useContext(OrderDataContext)
-  const { clearCart } = useContext(ShoppingCartContext);
+  const { delivery, loading, error } = useContext(DeliveryContext)
+  const { setOrderData } = useContext(OrderDataContext)
   const navigate = useNavigate()
   const inputStyles = 'w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300'
   const formik = useFormik({
@@ -56,21 +55,6 @@ export default function CheckoutForm() {
       console.log(values);
       resetForm();
       navigate("/cart/checkout/order")
-      // clearCart();
-      // toast.success('🦄 Order Accepted!', {
-      //   position: "top-center",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      //   transition: Bounce,
-      //   onClose: () => {
-      //     navigate('/');
-      //   }
-      // });
     },
   });
 
@@ -202,35 +186,27 @@ export default function CheckoutForm() {
         )}
         <h2 htmlFor='delivery' className='text-xl font-semibold mt-5'>Choose Delivery Option: </h2>
         <div>
-            <div className="bg-white flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+          {!loading && delivery ? delivery.map((delivery, index) => {
+            return (
+              <div key={index} className="bg-white flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                 <input
                 type='radio'
-                id='InPost'
-                value='InPost'
+                id={delivery.type}
+                value={delivery.type}
                 name='delivery'
-                checked={formik.values.delivery === 'InPost'}
+                checked={formik.values.delivery === delivery.type}
                 onChange={formik.handleChange}
                 className="cursor-pointer w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />{' '}
-                <label htmlFor='InPost' className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">InPost</label>
+                <label htmlFor={delivery.type} className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">{delivery.type} {formatCurrency(delivery.price)}</label>
             </div>
-            <div className="bg-white flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                <input
-                type='radio'
-                id='Kurier'
-                value='Kurier'
-                name='delivery'
-                checked={formik.values.delivery === 'Kurier'}
-                onChange={formik.handleChange}
-                className="cursor-pointer w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                />{' '}
-                <label htmlFor='Kurier' className="cursor-pointer w-full py-4 ms-2 text-sm font-medium text-gray-900">Kurier</label>
-            </div>
-            {formik.touched.delivery && formik.errors.delivery ? (
-                <ErrorMessage message={formik.errors.delivery} />
-                ) : (
-                <></>
-            )}
+            )
+          }) : <div className="bg-white flex items-center ps-4 border border-gray-200 rounded py-4 ms-2 text-sm font-medium text-gray-900">Loading ...</div>}
+          {formik.touched.delivery && formik.errors.delivery ? (
+              <ErrorMessage message={formik.errors.delivery} />
+              ) : (
+              <></>
+          )}
         </div>
         <div className="bg-white mt-10 flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
             <input
