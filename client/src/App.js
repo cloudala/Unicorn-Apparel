@@ -8,7 +8,8 @@ import ProductDetailsPage from './pages/ProductDetailsPage';
 import ProductListPage from './pages/ProductListPage';
 import OrderItemList from './components/OrderItemList';
 import AdminPage from './pages/AdminPage'
-import TestPage from './pages/TestPage'
+import SortFilterPage from './pages/SortFilterPage'
+import AdminEditPage from './pages/AdminEditPage'
 
 export default function App() {
   return (
@@ -16,8 +17,9 @@ export default function App() {
       <NavBar/>
         <Routes>
           <Route path='/' element={<ProductListPage/>}/>
-          <Route path='/store' element={<TestPage/>}/>
+          <Route path='/store' element={<SortFilterPage/>}/>
           <Route path='/admin' element={<AdminPage/>}/>
+          <Route path='/admin/:id' element={<AdminEditPage/>}/>
           <Route path='/products/:id' element={<ProductDetailsPage/>}/>
           <Route path='/cart' element={<ShoppingCart/>}/>
           <Route path='/cart/checkout' element={<CheckoutForm/>}/>

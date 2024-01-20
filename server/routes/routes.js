@@ -61,6 +61,102 @@ router.get('/api/products', async (req, res) => {
   }
 });
 
+router.get('/api/productstest', async (req, res) => {
+  try {
+    const {
+      category,
+      minPrice,
+      maxPrice,
+      sortBy
+    } = req.query;
+
+    const session = driver.session();
+
+    // Base Cypher query
+    let cypherQuery = `
+      MATCH (p:Product)-[:BELONGS_TO]->(c:Category)
+      OPTIONAL MATCH (p)<-[:REVIEWS]-(r:Review)
+      WITH p, c, AVG(r.rating) AS averageRating
+    `;
+
+    // Apply filters based on query parameters
+    if (category) {
+      cypherQuery += ' WHERE c.name = $category';
+    }
+
+    if (minPrice && maxPrice) {
+      category ? cypherQuery += ' AND' : cypherQuery += ' WHERE'
+      cypherQuery += ' p.price >= $minPrice AND p.price <= $maxPrice';
+    } else if (minPrice) {
+      category ? cypherQuery += ' AND' : cypherQuery += ' WHERE'
+      cypherQuery += ' p.price >= $minPrice';
+    } else if (maxPrice) {
+      category ? cypherQuery += ' AND' : cypherQuery += ' WHERE'
+      cypherQuery += ' p.price <= $maxPrice';
+    }
+
+    cypherQuery += `
+      RETURN p.id, p.title, p.imageUrl, c.name AS category, toFloat(p.price) AS price, p.shortDescription, p.longDescription, toInteger(p.count) AS count, averageRating
+    `;
+
+    // Apply sorting based on query parameters
+    if (sortBy) {
+      switch (sortBy) {
+        case 'priceLowToHigh':
+          cypherQuery += ' ORDER BY toFloat(p.price) ASC';
+          break;
+        case 'priceHighToLow':
+          cypherQuery += ' ORDER BY toFloat(p.price) DESC';
+          break;
+        case 'ratingLowToHigh':
+          cypherQuery += ' ORDER BY toFloat(averageRating) ASC';
+          break
+        case 'ratingHighToLow':
+          cypherQuery += ' ORDER BY toFloat(averageRating) DESC';
+          break
+        case 'dateOldestFirst':
+          cypherQuery += ' ORDER BY p.dateAdded ASC';
+          break;
+        case 'dateNewestFirst':
+          cypherQuery += ' ORDER BY p.dateAdded DESC';
+        // break;
+        default:
+          break;
+      }
+    }
+
+    // Run the Cypher query
+    const result = await session.run(cypherQuery, {
+      category,
+      minPrice: parseFloat(minPrice),
+      maxPrice: parseFloat(maxPrice),
+    });
+
+    session.close();
+
+    const products = result.records.map(record => {
+      const averageRating = record.get('averageRating');
+      return {
+        id: record.get('p.id'),
+        title: record.get('p.title'),
+        imageUrl: record.get('p.imageUrl'),
+        category: record.get('category'),
+        price: parseFloat(record.get('price')),
+        shortDescription: record.get('p.shortDescription'),
+        longDescription: record.get('p.longDescription'),
+        count: record.get('count').toNumber(),
+        averageRating: averageRating !== null ? parseFloat(averageRating) : null,
+      };
+    });
+
+    res.json({ products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 // Endpoint for getting product with given ID
 router.get('/api/products/:id', async (req, res) => {
   try {
@@ -288,6 +384,25 @@ router.get('/api/delivery', async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+// Endpoint for retrieving all categories from the database
+router.get('/api/categories', (req, res) => {
+  const session = driver.session();
+
+  session
+    .run('MATCH (n:Category) RETURN n')
+    .then((result) => {
+      const nodes = result.records.map((record) => record.get('n').properties);
+      res.json(nodes);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    })
+    .finally(() => {
+      session.close();
+    });
 });
 
 

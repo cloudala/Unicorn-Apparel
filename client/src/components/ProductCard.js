@@ -17,7 +17,6 @@ export default function ProductCard({product}) {
     const cheapestDeliveryPrice = !loading && delivery.length > 0 ? Math.min(...delivery.map(deliveryOption => deliveryOption.price)) : null;
     const {getItemQuantity} = useContext(ShoppingCartContext)
     const inCartCount = getItemQuantity(product.id)
-    console.log(product.id)
     return (
         <div className="relative w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 group overflow-hidden">
             <div className="h-64 w-64 rounded-t-lg mx-auto my-5">
