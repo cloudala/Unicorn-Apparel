@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import { ProductContext } from '../contexts/ProductContext';
+import { OrderDataContext } from '../contexts/OrderDataContext';
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
 import OrderItemCard from './OrderItemCard'
 import Loading from './Loading'
@@ -12,10 +13,12 @@ export default function OrderItemList() {
     const navigate = useNavigate()
     const { products } = useContext(ProductContext);
     const { cartItems, clearCart } = useContext(ShoppingCartContext)
+    const {orderData} = useContext(OrderDataContext)
     const orderedProducts = cartItems.map(cartItem => {
         const productInCart = products.find(product => product.id === cartItem.id);
+        const productQuantity = cartItem.quantity
         return {
-        ...productInCart
+        ...productInCart, quantity: productQuantity
         };
       });
 
@@ -24,20 +27,62 @@ export default function OrderItemList() {
         return subtotal + item.quantity*productPrice
     }, 0)
     
-    function handleButtonClick() {
-        toast.success('🦄 Order Accepted!', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
-        clearCart()
-        navigate("/")
+    async function handleButtonClick() {
+        const orderedProductsBody = orderedProducts.map(product => {
+            return {id: product.id, quantity: product.quantity}
+            }
+        )
+        const orderBody = {...orderData, products: orderedProductsBody}
+        try {
+            const response = await fetch('http://localhost:4000/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderBody),
+            });
+
+            if (!response.ok) {
+                toast.error('🦄 Error sending order! Please try again!', {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  transition: Bounce,
+                });
+            } else {
+                toast.success('🦄 Order Accepted!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }
+        } catch {
+            toast.error('🦄 Error sending order! Please try again!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+        } finally {
+            clearCart()
+            navigate("/")
+        }
     }
     return (
         <div className="min-h-screen">

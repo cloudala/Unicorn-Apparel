@@ -12,7 +12,7 @@ export default function ReviewListComponent({ id, isAdmin }) {
           {loading ? (
             <Loading/>
           ) : !error && data && data.reviews ? (
-            <ReviewList reviews={data.reviews} isAdmin={isAdmin}/>
+            <ReviewList reviews={data.reviews} isAdmin={isAdmin} id={id}/>
           ) : (
             <p>Error fetching data</p>
           )}

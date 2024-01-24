@@ -59,7 +59,7 @@ export default function SortFilterPage() {
     queryParamsArray.map(([key, value]) => displayQueryParams.append(key, value));
     navigate(`?${displayQueryParams.toString().replace(/,/g, '=')}`);
     
-    const apiUrl = `http://localhost:4000/api/productstest${queryParamsArray.length > 0 ? `?${queryParamsArray.join('&').replace(/,/g, '=')}` : ''}`;
+    const apiUrl = `http://localhost:4000/api/products${queryParamsArray.length > 0 ? `?${queryParamsArray.join('&').replace(/,/g, '=')}` : ''}`;
     dispatch({ type: 'SET_API', payload: apiUrl});
   };
 

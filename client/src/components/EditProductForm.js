@@ -16,17 +16,17 @@ export default function EditProductForm({ product }) {
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
-      imageUrl: Yup.string().url('Invalid URL format').required('Image URL is required'),
-      category: Yup.string().required('Category is required'),
-      price: Yup.number().required('Price is required').positive('Price must be a positive number'),
-      count: Yup.number().required('Count is required').integer('Count must be an integer').min(0, 'Count must be at least 0'),
-      shortDescription: Yup.string().required('Short Description is required'),
-      longDescription: Yup.string().required('Long Description is required')
+      imageUrl: Yup.string().url('Invalid URL format'),
+      category: Yup.string(),
+      price: Yup.number().positive('Price must be a positive number'),
+      count: Yup.number().integer('Count must be an integer').min(0, 'Count must be at least 0'),
+      shortDescription: Yup.string(),
+      longDescription: Yup.string()
     }),
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://localhost:4000/api/products', {
-          method: 'POST',
+        const response = await fetch(`http://localhost:4000/api/products/${product.id}`, {
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -34,7 +34,19 @@ export default function EditProductForm({ product }) {
         });
 
         if (!response.ok) {
-          toast.error('🦄 Error adding product!', {
+          toast.error('🦄 Error updating product!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } else {
+          toast.success('🦄 Product updated successfully!', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -46,22 +58,8 @@ export default function EditProductForm({ product }) {
             transition: Bounce,
           });
         }
-
-        toast.success('🦄 Product added successfully!', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
-
-        formik.resetForm();
       } catch (error) {
-        toast.error('🦄 Error adding product!', {
+        toast.error('🦄 Error updating product!', {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

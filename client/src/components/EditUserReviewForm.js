@@ -5,7 +5,7 @@ import ErrorMessage from './ErrorMessage';
 import Rating from '@mui/material/Rating';
 import { toast, Bounce } from 'react-toastify';
 
-export default function EditUserReviewForm({ productId, review }) {
+export default function EditUserReviewForm({ review, id }) {
   const inputStyles = 'w-full p-2 rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300'
   const formik = useFormik({
     initialValues: {
@@ -25,19 +25,31 @@ export default function EditUserReviewForm({ productId, review }) {
     onSubmit: async (values, { resetForm }) => {
       const { rating, name, reviewBody } = values;
       const reviewerName = name ? name : 'Anonymous';
-      const review = { rating, reviewerName, reviewBody };
+      const updatedReview = { rating, reviewerName, reviewBody };
       
       try {
-        const response = await fetch(`http://localhost:4000/api/products/${productId}/reviews`, {
-          method: 'POST',
+        const response = await fetch(`http://localhost:4000/api/products/${id}/reviews/${review.reviewId}`, {
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(review),
+          body: JSON.stringify(updatedReview),
         });
 
         if (!response.ok) {
-          toast.error('🦄 Error sending review!', {
+          toast.error('🦄 Error updating review!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } else {
+          toast.success('🦄 Review updated successfully!', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -49,21 +61,8 @@ export default function EditUserReviewForm({ productId, review }) {
             transition: Bounce,
           });
         }
-
-        toast.success('🦄 Review sent successfully!', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
-        resetForm();
       } catch (error) {
-        toast.error('🦄 Error sending review!', {
+        toast.error('🦄 Error updating review!', {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
