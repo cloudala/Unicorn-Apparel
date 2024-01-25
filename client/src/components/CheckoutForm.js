@@ -44,8 +44,7 @@ export default function CheckoutForm() {
         .required('Postal code is required'),
       city: Yup.string().required('City is required'),
       delivery: Yup.string()
-        .oneOf(['InPost', 'Kurier'], 'Delivery is required')
-        .required('Required'),
+        .required('Delivery is required'),
       terms: Yup.boolean().oneOf(
         [true],
         'You must agree to the terms of service'
