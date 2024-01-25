@@ -19,7 +19,7 @@ function getProductsQuery(queryParams) {
   }
 
   query += `
-    RETURN p.id, p.title, p.imageUrl, c.name AS category, toFloat(p.price) AS price, p.shortDescription, p.longDescription, toInteger(p.count) AS count, averageRating
+    RETURN p.id, p.title, p.imageUrl, c.name AS category, toFloat(p.price) AS price, p.shortDescription, toInteger(p.count) AS count, averageRating
   `;
 
   if (sortBy) {

@@ -57,4 +57,17 @@ function addOrderQuery(requestBody) {
   };
 }
 
-module.exports = { addOrderQuery };
+function deleteOrderQuery(orderId) {
+  const query = `
+    MATCH (order:Order { id: $orderId })
+    DETACH DELETE order
+    RETURN true;
+  `;
+
+  return {
+    query,
+    parameters: { orderId },
+  };
+}
+
+module.exports = { addOrderQuery, deleteOrderQuery };

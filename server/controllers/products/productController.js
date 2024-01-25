@@ -16,7 +16,6 @@ async function getProducts (req, res) {
         category: record.get('category'),
         price: parseFloat(record.get('price')),
         shortDescription: record.get('p.shortDescription'),
-        longDescription: record.get('p.longDescription'),
         count: record.get('count').toNumber(),
         averageRating: averageRating !== null ? parseFloat(averageRating) : null,
       };

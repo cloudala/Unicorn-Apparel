@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { driver } = require('../../database/setup');
 
 const orderValidation = [
@@ -83,4 +83,8 @@ const orderValidation = [
     .isInt({ min: 1 }).withMessage('Quantity must be at least 1'),
 ];
 
-module.exports = { orderValidation }
+const validateOrderId = (req, res, next) => {
+  param('orderId').isUUID().withMessage('Invalid UUID format for id')(req, res, next);
+};
+
+module.exports = { orderValidation, validateOrderId }
