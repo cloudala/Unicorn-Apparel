@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useLayoutEffect } from 'react';
 import ErrorMessage from './ErrorMessage';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +8,7 @@ import formatCurrency from '../utils/currencyFormatter';
 import * as Yup from 'yup';
 
 export default function CheckoutForm() {
+  const firstInputRef = useRef(null);
   const { delivery, loading, error } = useContext(DeliveryContext)
   const { setOrderData } = useContext(OrderDataContext)
   const navigate = useNavigate()
@@ -58,6 +59,12 @@ export default function CheckoutForm() {
     },
   });
 
+  useLayoutEffect(() => {
+    if (firstInputRef.current) {
+      firstInputRef.current.focus();
+    }
+  }, []); 
+
   return (
     <div className='min-h-screen flex flex-col items-center justify-center my-5'>
       <form
@@ -77,6 +84,7 @@ export default function CheckoutForm() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className={inputStyles}
+                ref={firstInputRef}
                 />
                 {formik.touched.name && formik.errors.name ? (
                 <ErrorMessage message={formik.errors.name} />

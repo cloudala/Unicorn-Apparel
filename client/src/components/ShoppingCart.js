@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { ProductContext } from '../contexts/ProductContext';
 import { DeliveryContext } from '../contexts/DeliveryContext';
 import { ShoppingCartContext } from '../contexts/ShoppingCartContext';
@@ -12,31 +12,33 @@ export default function ShoppingCart() {
     const { cartItems } = useContext(ShoppingCartContext);
     const { delivery, loading } = useContext(DeliveryContext);
 
-    if (!products) {
-      return <Loading />;
-    }
-  
-    const productsInCart = products.filter(product => cartItems.some(item => item.id === product.id));
-    const subtotal = cartItems.reduce((subtotal, item) => {
-      const product = products.find(product => product.id === item.id);
-      if (product) {
-        return subtotal + item.quantity * product.price;
-      }
-      return subtotal;
-    }, 0);
-  
-    if (!delivery) {
-      return <Loading />;
-    }
-  
-    const cheapestDeliveryPrice =
-      subtotal === 0
+    const productsInCart = useMemo(() => (
+      products && cartItems ? products.filter(product => cartItems.some(item => item.id === product.id)) : []
+    ), [products, cartItems]);
+
+    const subtotal = useMemo(() => (
+      products && cartItems ? cartItems.reduce((subtotal, item) => {
+        const product = products.find(product => product.id === item.id);
+        if (product) {
+          return subtotal + item.quantity * product.price;
+        }
+        return subtotal;
+      }, 0) : 0
+    ), [products, cartItems]);
+
+    const cheapestDeliveryPrice = useMemo(() => {
+      return subtotal === 0
         ? 0
         : !loading && delivery.length > 0
         ? Math.min(...delivery.map(deliveryOption => deliveryOption.price))
         : null;
-  
-    const checkoutDisabled = subtotal === 0;
+    }, [subtotal, loading, delivery]);
+
+    const checkoutDisabled = useMemo(() => subtotal === 0, [subtotal]);
+
+    if (loading) {
+      return <Loading />;
+    }
 
     return (
         <div className="min-h-screen">
