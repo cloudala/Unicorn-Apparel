@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7474:7474" # Browser interface
+      - "7687:7687" # Bolt protocol
+    environment:
+      - NEO4J_AUTH=${NEO4J_USERNAME:-neo4j}/${NEO4J_PASSWORD:-somepassword}
+      - NEO4J_PLUGINS=["apoc"] # Enable APOC
+    volumes:
+      - neo4j_data:/data
+      - neo4j_plugins:/plugins # Volume for plugins
+      - ./init.cypher:/var/lib/neo4j/import/init.cypher # cypher script with dummy data
+
+volumes:
+  neo4j_data:
+  neo4j_plugins:
